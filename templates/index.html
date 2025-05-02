@@ -10,7 +10,7 @@
         <span class="badge badge-primary"> {{ post['created'] }} </span> 
         
         <span class="badge float-right btn btn-sm btn-danger"> 
-            <a href="{{ url_for('edit', post_id=post['id']) }}"> delete </a>
+            <a href="{{ url_for('delete', post_id=post['id']) }}"> delete </a>
         </span>
 
         <span class="badge float-right btn btn-sm btn-success "> 

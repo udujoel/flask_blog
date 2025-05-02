@@ -26,15 +26,19 @@ def get_post(post_id):
         abort(404)
     return post
 
-# def edit_post(post_id):
-#     conn = get_db_connection()
-#     post = conn.execute('SELECT * FROM posts WHERE id = ?', (post_id,)).fetchone()
-#     title = post['title']
-#     content = post['content']
-#     new_post = conn.execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', (title, content, post_id))
-#     conn.commit()
-#     conn.close()
-#     return new_post
+def edit_post(post_id):
+    conn = get_db_connection()
+    post = conn.execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', (request.form['title'], request.form['content'], post_id))
+    conn.commit()
+    conn.close()
+    return post
+
+def delete_post(post_id):
+    conn = get_db_connection()
+    post = conn.execute('DELETE FROM posts WHERE id = ?', (post_id,))
+    conn.commit()
+    conn.close()
+    return post
 
 @app.route('/<int:post_id>')
 def post(post_id):
@@ -67,10 +71,12 @@ def edit(post_id):
         if not title:
             flash('Title is needed!')
         else:
-            conn = get_db_connection()
-            conn.execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', (title, content, post_id))
-            conn.commit()
-            conn.close()
+            post = edit_post(post_id)
             return redirect(url_for('post', post_id=post_id))
 
     return render_template('edit.html', post=get_post(post_id))
+
+@app.route('/delete/<int:post_id>')
+def delete(post_id):
+    delete_post(post_id)
+    return redirect(url_for('index'))
