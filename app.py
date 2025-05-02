@@ -65,13 +65,12 @@ def create():
 @app.route('/edit/<int:post_id>', methods=('GET','POST'))
 def edit(post_id):
     if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
+        title = request.form['title'] 
 
         if not title:
             flash('Title is needed!')
         else:
-            post = edit_post(post_id)
+            edit_post(post_id)
             return redirect(url_for('post', post_id=post_id))
 
     return render_template('edit.html', post=get_post(post_id))
