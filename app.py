@@ -75,7 +75,7 @@ def edit(post_id):
 
     return render_template('edit.html', post=get_post(post_id))
 
-@app.route('/delete/<int:post_id>')
+@app.route('/<int:post_id>/delete', methods=('POST',))
 def delete(post_id):
     post = get_post(post_id)
     delete_post(post_id)
