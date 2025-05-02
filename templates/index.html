@@ -7,7 +7,15 @@
             <h2> {{ post['title'] }} </h2>
         </a>
 
-        <span class="badge badge-primary"> {{ post['created'] }} </span>
+        <span class="badge badge-primary"> {{ post['created'] }} </span> 
+        
+        <span class="badge float-right btn btn-sm btn-danger"> 
+            <a href="{{ url_for('edit', post_id=post['id']) }}"> delete </a>
+        </span>
+
+        <span class="badge float-right btn btn-sm btn-success "> 
+            <a href="{{ url_for('edit', post_id=post['id']) }}"> edit </a>
+        </span>
 
         <hr>
 

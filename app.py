@@ -26,6 +26,16 @@ def get_post(post_id):
         abort(404)
     return post
 
+# def edit_post(post_id):
+#     conn = get_db_connection()
+#     post = conn.execute('SELECT * FROM posts WHERE id = ?', (post_id,)).fetchone()
+#     title = post['title']
+#     content = post['content']
+#     new_post = conn.execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', (title, content, post_id))
+#     conn.commit()
+#     conn.close()
+#     return new_post
+
 @app.route('/<int:post_id>')
 def post(post_id):
     post = get_post(post_id)
@@ -47,3 +57,20 @@ def create():
             return redirect(url_for('index'))
 
     return render_template('create.html')
+
+@app.route('/edit/<int:post_id>', methods=('GET','POST'))
+def edit(post_id):
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+
+        if not title:
+            flash('Title is needed!')
+        else:
+            conn = get_db_connection()
+            conn.execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', (title, content, post_id))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('post', post_id=post_id))
+
+    return render_template('edit.html', post=get_post(post_id))
