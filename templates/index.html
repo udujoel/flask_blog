@@ -1,5 +1,15 @@
 {% extends 'base.html' %} {% block content %}
-<h1>{% block title %} Welcome to FlaskBlog {% endblock %}</h1>
+
+<!-- HERO BANNER -->
+<header class="bg-primary text-white text-center py-5">
+  <div class="container">
+    <h1 class="display-5 fw-bold">Stay ahead of cyber threats</h1>
+    <p class="lead mb-4">Practical guides, news and tips for security-minded professionals.</p>
+    <img src="./static/img/hero.jpg" class="img-fluid rounded shadow" style="max-height:300px" alt="Cyber security hero">
+  </div>
+</header>
+
+
 {% for post in posts %}
 <a href="{{ url_for('post', post_id=post['id']) }}">
   <h2>{{ post['title'] }}</h2>
