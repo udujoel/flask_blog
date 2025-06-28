@@ -81,3 +81,16 @@ def delete(post_id):
     delete_post(post_id)
     flash('"{}" was successfully deleted!'.format(post['title']) )
     return redirect(url_for('index'))
+
+
+@app.route('/blog')
+def blog():
+    return render_template('blog.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
