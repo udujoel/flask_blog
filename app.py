@@ -131,16 +131,26 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
+# register new users
 @app.route('/register', methods=('GET','POST'))
 def register():
+    if request.method == 'GET':
+        if session['username'] not in session and session['username'] not in ['admin']:
+            flash('Only admin can register new users')
+            return redirect(url_for('contactus'))
+        
     if request.method == 'POST':
         username = request.form['username']
+        name = request.form['name']
         email = request.form['email']
         password = request.form['password']
         confirm = request.form['confirm']
-
+        
+        
         if not username:
             flash('Username is needed!')
+        elif not name:
+            flash('Name is needed!')
         elif not email:
             flash('Email is needed!')
         elif not password:
@@ -149,7 +159,7 @@ def register():
             flash('Passwords do not match!')
         else:
             conn = get_db_connection()
-            conn.execute('INSERT INTO users (username, email, password) VALUES (?,?,?)', (username, email, password))
+            conn.execute('INSERT INTO users (username, name, email, password) VALUES (?,?,?,?)', (username, name, email, password))
             conn.commit()
             conn.close()
             flash('Registration successful')
@@ -166,7 +176,32 @@ def profile():
     conn.close()
     return render_template('profile.html', posts=posts)
 
-
+# filters for formatting dates
 @app.template_filter('iso_to_pretty')
 def iso_to_pretty(value, fmt='%B %-d, %Y'):
     return datetime.fromisoformat(value.replace('Z', '+00:00')).strftime(fmt)
+
+@app.route('/contactus', methods=('GET','POST'))
+def contactus():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        issue = request.form['issue']
+        subject = request.form['subject']
+        message = request.form['message']
+
+        if not name:
+            flash('Name is needed!')
+        elif not email:
+            flash('Email is needed!')
+        elif not issue:
+            flash('Issue is needed!')
+        elif not subject:
+            flash('Subject is needed!')
+        elif not message:
+            flash('Message is needed!')
+        else:
+            flash('Message sent!')
+            return redirect(url_for('contactus'))
+
+    return render_template('contactus.html')
