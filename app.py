@@ -1,10 +1,9 @@
 import sqlite3
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect, session
 from werkzeug.exceptions import abort
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'nosecret'
-
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -87,8 +86,28 @@ def delete(post_id):
 def blog():
     return render_template('blog.html')
 
-@app.route('/login')
+@app.route('/login', methods=('GET','POST'))
 def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if not username:
+            flash('Username is needed!')
+        elif not password:
+            flash('Password is needed!')
+        else:
+            conn = get_db_connection()
+            user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
+            conn.close()
+            if user is None:
+                flash('Username does not exist!')
+            else:
+                if user['password'] != password:
+                    flash('Password is incorrect!')
+                else:
+                    return redirect(url_for('create'))
+
     return render_template('login.html')
 
 @app.route('/register', methods=('GET','POST'))
@@ -112,6 +131,6 @@ def register():
             conn.execute('INSERT INTO users (username, email, password) VALUES (?,?,?)', (username, email, password))
             conn.commit()
             conn.close()
-            return redirect(url_for('index'))
+            return redirect(url_for('login'))
 
     return render_template('register.html')
