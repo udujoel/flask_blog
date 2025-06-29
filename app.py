@@ -1,5 +1,5 @@
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, render_template, request, url_for, flash, redirect, session
 from flask_session import Session
 from werkzeug.exceptions import abort
@@ -9,7 +9,7 @@ app.config['SECRET_KEY'] = 'nosecret'
 
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_PERMANENT'] = True
-app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=30)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 
 
 Session(app)
@@ -23,7 +23,7 @@ def get_db_connection():
 @app.route('/')
 def index():
     conn = get_db_connection()
-    posts = conn.execute('SELECT id, title, content, strftime("%B %d, %Y at %H:%M", created) AS created, author FROM posts').fetchall()
+    posts = conn.execute('SELECT id, title, content, created, author FROM posts').fetchall()
     conn.close()
     return render_template('index.html', posts=posts)
 
@@ -121,6 +121,7 @@ def login():
                     session['username'] = user['username']
                     session['name'] = user['name']
                     session['email'] = user['email']
+                    session['member_since'] = user['member_since']
                     return redirect(url_for('index'))
 
     return render_template('login.html')
@@ -164,3 +165,8 @@ def profile():
     posts = conn.execute('SELECT * FROM posts WHERE author = ?', (session['name'],)).fetchall()
     conn.close()
     return render_template('profile.html', posts=posts)
+
+
+@app.template_filter('iso_to_pretty')
+def iso_to_pretty(value, fmt='%B %-d, %Y'):
+    return datetime.fromisoformat(value.replace('Z', '+00:00')).strftime(fmt)

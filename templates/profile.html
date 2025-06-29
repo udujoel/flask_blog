@@ -12,28 +12,31 @@
 
           <!-- Avatar -->
           <img
-            src="{{ url_for('static', filename='img/avatar.jpg') }}"
+            src="{{ url_for('static', filename='img/avatar.png') }}"
             class="rounded-circle mb-3"
             style="width: 120px; height: 120px; object-fit: cover;"
             alt="User avatar">
 
           <!-- Basic details -->
           <h1 class="h4 fw-bold mb-0">
+            {{ session.username }}
+          </h1>
+          <h1 class="h4 fw-bold mb-0">
             {{ session.name }}
           </h1>
           <p class="text-muted mb-1">
-            {{ user.email }}
+            {{ session.email }}
           </p>
           <p class="text-muted small">
-            Member since {{ (user['member_since']).strftime('%B %Y') }}
+            Member since {{ session.member_since|iso_to_pretty('%B %Y') }}
           </p>
         </div>
       </div>
 
-      <!-- Quick stats (optional) -->
+      <!-- Quick stats -->
       <div class="card mt-4 shadow-sm">
         <div class="card-header bg-primary bg-gradient text-white">
-          Your activity
+          Your stats
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item d-flex justify-content-between">
@@ -52,7 +55,7 @@
           {% for post in posts %}
           <li class="list-group-item d-flex justify-content-between">
             <span>{{ post['title'] }}</span>
-            <span>{{ post['created'] }}</span>
+            <span>{{ post['created']|iso_to_pretty('%B %d, %Y at %H:%M') }}</span>
           </li>
           {% endfor %}
         </ul>
