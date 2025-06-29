@@ -115,3 +115,21 @@ Example with Waitress (a production WSGI server):
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Others
+Other features implemented:
+- Contact us form
+- Profile page
+- Register new users (only admin can register new users)
+- Login
+- Logout
+
+Bugs fixed:
+⦁	only the admin can register users
+⦁	user management
+⦁	session management
+⦁	contact us page
+⦁	dark text/text not showing
+⦁	add author
+⦁	show post's author - full name
+⦁	format date-time
