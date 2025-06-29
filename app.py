@@ -1,19 +1,29 @@
 import sqlite3
+from datetime import datetime
 from flask import Flask, render_template, request, url_for, flash, redirect, session
+from flask_session import Session
 from werkzeug.exceptions import abort
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'nosecret'
+
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_PERMANENT'] = True
+app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(days=30)
+
+
+Session(app)
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     return conn
 
+
 @app.route('/')
 def index():
     conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM posts').fetchall()
+    posts = conn.execute('SELECT id, title, content, strftime("%B %d, %Y at %H:%M", created) AS created, author FROM posts').fetchall()
     conn.close()
     return render_template('index.html', posts=posts)
 
@@ -47,6 +57,8 @@ def post(post_id):
 @app.route('/create', methods=('GET','POST'))
 def create():
     if request.method == 'POST':
+        if 'username' not in session:
+            return redirect(url_for('login'))
         title = request.form['title']
         content = request.form['content']
 
@@ -54,7 +66,7 @@ def create():
             flash('Title is needed!')
         else:
             conn = get_db_connection()
-            conn.execute('INSERT INTO posts (title, content) VALUES (?,?)', (title, content))
+            conn.execute('INSERT INTO posts (title, content, author) VALUES (?,?,?)', (title, content, session['name']))
             conn.commit()
             conn.close()
             return redirect(url_for('index'))
@@ -64,6 +76,8 @@ def create():
 @app.route('/edit/<int:post_id>', methods=('GET','POST'))
 def edit(post_id):
     if request.method == 'POST':
+        if 'username' not in session:
+            return redirect(url_for('login'))
         title = request.form['title'] 
 
         if not title:
@@ -76,15 +90,13 @@ def edit(post_id):
 
 @app.route('/<int:post_id>/delete', methods=('POST',))
 def delete(post_id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
     post = get_post(post_id)
     delete_post(post_id)
     flash('"{}" was successfully deleted!'.format(post['title']) )
     return redirect(url_for('index'))
 
-
-@app.route('/blog')
-def blog():
-    return render_template('blog.html')
 
 @app.route('/login', methods=('GET','POST'))
 def login():
@@ -106,9 +118,17 @@ def login():
                 if user['password'] != password:
                     flash('Password is incorrect!')
                 else:
-                    return redirect(url_for('create'))
+                    session['username'] = user['username']
+                    session['name'] = user['name']
+                    session['email'] = user['email']
+                    return redirect(url_for('index'))
 
     return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 @app.route('/register', methods=('GET','POST'))
 def register():
@@ -131,6 +151,16 @@ def register():
             conn.execute('INSERT INTO users (username, email, password) VALUES (?,?,?)', (username, email, password))
             conn.commit()
             conn.close()
+            flash('Registration successful')
             return redirect(url_for('login'))
 
     return render_template('register.html')
+
+@app.route('/profile')
+def profile():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    conn = get_db_connection()
+    posts = conn.execute('SELECT * FROM posts WHERE author = ?', (session['name'],)).fetchall()
+    conn.close()
+    return render_template('profile.html', posts=posts)

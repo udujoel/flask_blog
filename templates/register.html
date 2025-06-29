@@ -8,9 +8,15 @@
 
       <form action="{{ url_for('register')}}" method="POST">
 
+        
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
           <input id="username" type="text" class="form-control" name="username" value="{{ request.form['username']}}" required>
+        </div>
+        
+        <div class="mb-3">
+          <label for="name" class="form-label">Full Name</label>
+          <input id="name" type="text" class="form-control" name="name" value="{{ request.form['name']}}" required>
         </div>
 
         <div class="mb-3">
