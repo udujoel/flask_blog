@@ -91,6 +91,27 @@ def blog():
 def login():
     return render_template('login.html')
 
-@app.route('/register')
+@app.route('/register', methods=('GET','POST'))
 def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        confirm = request.form['confirm']
+
+        if not username:
+            flash('Username is needed!')
+        elif not email:
+            flash('Email is needed!')
+        elif not password:
+            flash('Password is needed!')
+        elif password != confirm:
+            flash('Passwords do not match!')
+        else:
+            conn = get_db_connection()
+            conn.execute('INSERT INTO users (username, email, password) VALUES (?,?,?)', (username, email, password))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('index'))
+
     return render_template('register.html')

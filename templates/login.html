@@ -1,12 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 <body class="bg-light">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="index.html">TheCyberForum</a>
-  </div>
-</nav>
-
 <main class="d-flex align-items-center justify-content-center py-5">
   <div class="card shadow-sm" style="max-width: 380px; width: 100%;">
     <div class="card-body">
@@ -24,16 +18,12 @@
           <button class="btn btn-primary" type="submit">Login</button>
         </div>
         <p class="small text-center mb-0">
-          New here? <a href="register.html">Create an account</a>
+          New here? <a href="{{ url_for('register')}}">Create an account</a>
         </p>
       </form>
     </div>
   </div>
 </main>
-
-<footer class="bg-dark text-white text-center small py-4 mt-auto">
-  © 2025 TheCyberForum
-</footer>
 </body>
 
 {% endblock %}
