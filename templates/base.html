@@ -15,29 +15,51 @@
 
 <body class="bg-light d-flex flex-column min-vh-100">
 
-  <!-- NAVBAR -->
+  
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="{{ url_for('index')}}">TheCyberForum</a>
+    <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">TheCyberForum</a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#mainNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="mainNav" class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('index')}}">Blog</a></li>
+
+      <!-- LEFT SIDE LINKS -->
+      <ul class="navbar-nav me-auto">   <!--  me-auto pushes next element right  -->
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Blog</a></li>
+
         {% if session.username %}
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('create')}}">Create</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout')}}">Logout</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('profile')}}">{{ session.name }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('create') }}">Create</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
         {% else %}
-        <li class="nav-item"><a class="nav-link" href="{{url_for('login')}}">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
         {% endif %}
       </ul>
+
+       <!-- RIGHT-ALIGNED USER NAME / PROFILE -->
+       {% if session.username %}
+       <ul class="navbar-nav ml-auto d-flex align-items-center">
+         <li class="nav-item d-flex align-items-center">
+           <a class="nav-link d-flex align-items-center" href="{{ url_for('profile') }}">
+             <!-- Profile Image & Name -->
+             <img src="{{ url_for('static', filename='img/avatar.png') }}"
+                  alt="Profile"
+                  class="rounded-circle"
+                  style="width: 32px; height: 32px; object-fit: cover; margin-right: 8px;">
+             <span class="text-white">{{ session.name }}</span>
+           </a>
+         </li>
+       </ul>
+     {% endif %}
+
     </div>
   </div>
 </nav>
+
 
   <div class="container flex-grow-1">
     {% for message in get_flashed_messages() %}
