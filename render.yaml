@@ -11,4 +11,13 @@ services:
       - key: FLASK_ENV
         value: production
       - key: SECRET_KEY
-        generateValue: true 
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: thecyberforum-db
+          property: connectionString
+
+databases:
+  - name: thecyberforum-db
+    databaseName: thecyberforum
+    user: thecyberforum_user 

@@ -1,4 +1,5 @@
 import sqlite3
+import os
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, url_for, flash, redirect, session, Blueprint
 from flask_session import Session
@@ -6,7 +7,7 @@ from werkzeug.exceptions import abort
 
 # Initialize Flask app and configure session
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'nosecret'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'nosecret')
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_PERMANENT'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
@@ -17,8 +18,17 @@ forum_bp = Blueprint('forum_bp', __name__)
 
 def get_db_connection():
     """Create a new database connection with row factory for dict-like access."""
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
+    # Check if we're on Render (PostgreSQL) or local (SQLite)
+    if os.environ.get('DATABASE_URL'):
+        # PostgreSQL on Render
+        import psycopg2
+        from psycopg2.extras import RealDictCursor
+        conn = psycopg2.connect(os.environ.get('DATABASE_URL'))
+        conn.cursor_factory = RealDictCursor
+    else:
+        # SQLite for local development
+        conn = sqlite3.connect('database.db')
+        conn.row_factory = sqlite3.Row
     return conn
 
 @forum_bp.route('/')

@@ -1,48 +1,70 @@
 import sqlite3
-from datetime import datetime
+import os
 
-connection = sqlite3.connect('database.db')
+def init_sqlite_db():
+    """Initialize SQLite database for local development."""
+    conn = sqlite3.connect('database.db')
+    
+    with open('schema.sql') as f:
+        conn.executescript(f.read())
+    
+    # Insert admin user
+    conn.execute('INSERT INTO users (username, name, email, password) VALUES (?, ?, ?, ?)',
+                ('admin', 'Admin User', 'admin@example.com', 'admin123'))
+    
+    # Insert sample posts
+    conn.execute('INSERT INTO posts (title, content, author) VALUES (?, ?, ?)',
+                ('Welcome to TheCyberForum', 'This is your first post!', 'Admin User'))
+    
+    conn.commit()
+    conn.close()
+    print("SQLite database initialized successfully!")
 
-with open('schema.sql') as f:
-    connection.executescript(f.read())
+def init_postgres_db():
+    """Initialize PostgreSQL database for production."""
+    import psycopg2
+    from psycopg2.extras import RealDictCursor
+    
+    # Get database URL from environment
+    database_url = os.environ.get('DATABASE_URL')
+    if not database_url:
+        print("DATABASE_URL not found in environment variables")
+        return
+    
+    conn = psycopg2.connect(database_url)
+    conn.cursor_factory = RealDictCursor
+    cur = conn.cursor()
+    
+    # Read and execute schema
+    with open('schema.sql') as f:
+        schema = f.read()
+        # Convert SQLite syntax to PostgreSQL
+        schema = schema.replace('AUTOINCREMENT', 'SERIAL')
+        schema = schema.replace('datetime', 'timestamp')
+        
+        # Execute each statement separately
+        statements = schema.split(';')
+        for statement in statements:
+            if statement.strip():
+                cur.execute(statement)
+    
+    # Insert admin user
+    cur.execute('INSERT INTO users (username, name, email, password) VALUES (%s, %s, %s, %s)',
+                ('admin', 'Admin User', 'admin@example.com', 'admin123'))
+    
+    # Insert sample posts
+    cur.execute('INSERT INTO posts (title, content, author) VALUES (%s, %s, %s)',
+                ('Welcome to TheCyberForum', 'This is your first post!', 'Admin User'))
+    
+    conn.commit()
+    cur.close()
+    conn.close()
+    print("PostgreSQL database initialized successfully!")
 
-cur = connection.cursor()
-
-# Posts
-cur.execute( "INSERT INTO posts (title, content, author) VALUES (?,?,?)",
-            ('First Post', 'Content for the first post', 'admin')
-            )
-
-cur.execute( "INSERT INTO posts (title, content, author) VALUES (?,?,?)",
-            ('Second Post', 'Content for the second post', 'admin')
-            )
-
-cur.execute( "INSERT INTO posts (title, content, author) VALUES (?,?,?)",
-            ('Third Post', 'Content for the Third post', 'admin')
-            )
-
-cur.execute( "INSERT INTO posts (title, content, author) VALUES (?,?,?)",
-            ('Fourth Post', 'Content for the Fourth post', 'user')
-            )
-
-# Users
-cur.execute( "INSERT INTO users (username, name, email, password, member_since) VALUES (?,?,?,?,?)",
-            ('admin', 'admin', 'admin@gmail.com', 'admin', datetime.now())
-            )
-
-cur.execute( "INSERT INTO users (username, name, email, password, member_since) VALUES (?,?,?,?,?)",
-            ('user', 'user', 'user@gmail.com', 'user', datetime.now())
-            )
-
-# Comments
-cur.execute( "INSERT INTO comments (post_id, author, content) VALUES (?,?,?)",
-            (1, 'admin', 'This is a sample comment')
-            )
-
-cur.execute( "INSERT INTO comments (post_id, author, content) VALUES (?,?,?)",
-            (2, 'user', 'This is a sample comment')
-            )
-
-connection.commit()
-connection.close()
+if __name__ == '__main__':
+    # Check if we're on Render (PostgreSQL) or local (SQLite)
+    if os.environ.get('DATABASE_URL'):
+        init_postgres_db()
+    else:
+        init_sqlite_db()
 

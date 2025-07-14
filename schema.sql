@@ -1,30 +1,29 @@
 DROP TABLE IF EXISTS posts;
-
-CREATE TABLE posts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    created TEXT  DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ','now')),
-    title TEXT NOT NULL,
-    author TEXT NOT NULL,
-    content TEXT NOT NULL
-);
-
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS comments;
 
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL,
+    username TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    member_since TEXT  DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ','now'))
+    member_since TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS comments;
+CREATE TABLE posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    author TEXT NOT NULL
+);
 
 CREATE TABLE comments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     post_id INTEGER NOT NULL,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     author TEXT NOT NULL,
     content TEXT NOT NULL,
-    created TEXT  DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ','now'))
+    FOREIGN KEY (post_id) REFERENCES posts (id)
 );
