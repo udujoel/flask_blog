@@ -230,3 +230,12 @@ def subscribe():
         # conn.close()
         flash('Subscription successful')
         return redirect(url_for('index'))
+
+@app.route('/search', methods=('GET',))
+def search():
+    query = request.args.get('q')
+    conn = get_db_connection()
+    posts = conn.execute('SELECT * FROM posts WHERE title LIKE ? OR content LIKE ?', ('%'+query+'%', '%'+query+'%')).fetchall()
+    conn.close()
+    return render_template('search.html', posts=posts, query=query)
+
