@@ -45,10 +45,12 @@
 
         <!-- Comment form (shown if user is logged in) -->
         {% if session.username %}
-        <form action="{{ url_for('add_comment', post_id=post.id) }}" method="post" class="mb-1 justify-content-center"  style="max-width: 800px; max-height: 300px; margin: 0 auto;">
+        <form action="{{ url_for('add_comment', post_id=post.id) }}" method="post" class="mb-1 justify-content-center"  
+            style="max-width: 800px; max-height: 300px; margin: 0 auto;">
           <div class="mb-3">
             <label for="comment" class="form-label">Add a comment:</label>
-            <textarea id="comment" name="comment" class="form-control" rows="3" required></textarea>
+            <input id="comment" type="hidden" name="comment" value="{{ request.form['comment'] if request.form.get('comment') else '' }}">
+            <trix-editor input="comment" class="bg-white"></trix-editor>
           </div>
           <div class="d-grid d-md-flex justify-content-md-end">
             <button type="submit" class="btn btn-primary btn-sm">Post Comment</button>
