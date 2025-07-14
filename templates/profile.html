@@ -57,12 +57,12 @@
                 </div>
                 <div class="btn-group btn-group-sm mt-2 mt-md-0" role="group">
                   <a
-                    href="{{ url_for('edit', post_id=post['id']) }}"
+                    href="{{ url_for('forum_bp.edit', post_id=post['id']) }}"
                     class="btn btn-warning"
                     >Edit</a
                   >
                   <form
-                    action="{{ url_for('delete', post_id=post['id']) }}"
+                    action="{{ url_for('forum_bp.delete', post_id=post['id']) }}"
                     method="post"
                     style="display: inline"
                   >

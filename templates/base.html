@@ -25,7 +25,7 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">TheCyberForum</a>
+    <a class="navbar-brand fw-bold" href="{{ url_for('forum_bp.index') }}">TheCyberForum</a>
 
     <button class="navbar-toggler" type="button"
             data-bs-toggle="collapse" data-bs-target="#mainNav">
@@ -36,18 +36,18 @@
 
       <!-- LEFT SIDE LINKS -->
       <ul class="navbar-nav me-auto">   <!--  me-auto pushes next element right  -->
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('forum_bp.index') }}">Blog</a></li>
 
         {% if session.username %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('create') }}">Create</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('forum_bp.create') }}">Create</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('forum_bp.logout') }}">Logout</a></li>
         {% else %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('forum_bp.login') }}">Login</a></li>
         {% endif %}
       </ul>
 
       <!-- SEARCH FORM -->
-      <form class="form-inline my-2 my-lg-0 mx-lg-3" action="{{ url_for('search') }}" method="get" style="max-width: 300px; width: 100%;">
+      <form class="form-inline my-2 my-lg-0 mx-lg-3" action="{{ url_for('forum_bp.search') }}" method="get" style="max-width: 300px; width: 100%;">
         <div class="input-group input-group-sm w-100">
           <input type="search" name="q" class="form-control" placeholder="Search…" aria-label="Search" required>
           <div class="input-group-append">
@@ -63,7 +63,7 @@
        {% if session.username %}
        <ul class="navbar-nav ml-auto d-flex align-items-center">
          <li class="nav-item d-flex align-items-center">
-           <a class="nav-link d-flex align-items-center" href="{{ url_for('profile') }}">
+           <a class="nav-link d-flex align-items-center" href="{{ url_for('forum_bp.profile') }}">
              <!-- Profile Image & Name -->
              <img src="{{ url_for('static', filename='img/avatar.png') }}"
                   alt="Profile"
@@ -114,17 +114,17 @@
       <div class="col-md-4">
         <h6 class="fw-bold mb-2">Quick Links</h6>
         <ul class="list-unstyled">
-          <li><a href="{{ url_for('index') }}" class="text-white text-decoration-none">Blog</a></li>
-          <li><a href="{{ url_for('contactus') }}" class="text-white text-decoration-none">Contact Us</a></li>
-          <li><a href="{{ url_for('register') }}" class="text-white text-decoration-none">Join/Register</a></li>
-          <li><a href="{{ url_for('profile') }}" class="text-white text-decoration-none">Profile</a></li>
+          <li><a href="{{ url_for('forum_bp.index') }}" class="text-white text-decoration-none">Blog</a></li>
+          <li><a href="{{ url_for('forum_bp.contactus') }}" class="text-white text-decoration-none">Contact Us</a></li>
+          <li><a href="{{ url_for('forum_bp.register') }}" class="text-white text-decoration-none">Join/Register</a></li>
+          <li><a href="{{ url_for('forum_bp.profile') }}" class="text-white text-decoration-none">Profile</a></li>
         </ul>
       </div>
 
       <!-- Newsletter Signup -->
       <div class="col-md-4">
         <h6 class="fw-bold mb-2">Subscribe to our Newsletter</h6>
-        <form action="{{ url_for('subscribe') }}" method="post" class="d-flex flex-column flex-sm-row gap-2">
+        <form action="{{ url_for('forum_bp.subscribe') }}" method="post" class="d-flex flex-column flex-sm-row gap-2">
           <input type="email" name="email" class="form-control form-control-sm" placeholder="Your email" required>
           <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
         </form>

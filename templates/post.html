@@ -22,9 +22,9 @@
           <div class="mb-4">
             {{ post.content|safe }}
           </div>
-          <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-sm">&larr; Back to Blog</a>
+          <a href="{{ url_for('forum_bp.index') }}" class="btn btn-outline-primary btn-sm">&larr; Back to Blog</a>
           {% if session.username and session.username == post.author %}
-          <a href="{{ url_for('edit', post_id=post.id) }}" class="btn btn-warning btn-sm">
+          <a href="{{ url_for('forum_bp.edit', post_id=post.id) }}" class="btn btn-warning btn-sm">
             Edit Post
           </a>
         {% endif %}
@@ -50,7 +50,7 @@
 
         <!-- Comment form (shown if user is logged in) -->
         {% if session.username %}
-        <form action="{{ url_for('add_comment', post_id=post.id) }}" method="post" class="mb-1 justify-content-center"  
+        <form action="{{ url_for('forum_bp.add_comment', post_id=post.id) }}" method="post" class="mb-1 justify-content-center"  
             style="max-width: 800px; max-height: 300px; margin: 0 auto;">
           <div class="mb-3">
             <label for="comment" class="form-label">Add a comment:</label>

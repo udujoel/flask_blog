@@ -6,7 +6,7 @@
     <div class="card-body">
       <h1 class="h4 fw-bold mb-3 text-center">Create your account</h1>
 
-      <form action="{{ url_for('register')}}" method="POST">
+      <form action="{{ url_for('forum_bp.register')}}" method="POST">
 
         
         <div class="mb-3">
@@ -40,7 +40,7 @@
 
         
         <p class="small text-center mb-0">
-          Already have an account? <a href="{{ url_for('login')}}">Sign in</a>
+          Already have an account? <a href="{{ url_for('forum_bp.login')}}">Sign in</a>
         </p>
       </form>
     </div>

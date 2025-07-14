@@ -6,7 +6,7 @@
     <div class="card-body">
       <h1 class="h4 fw-bold mb-3 text-center">Sign in</h1>
 
-      <form action="{{ url_for('login')}}" method="POST">
+      <form action="{{ url_for('forum_bp.login')}}" method="POST">
 
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
@@ -20,7 +20,7 @@
           <button class="btn btn-primary" type="submit">Login</button>
         </div>
         <p class="small text-center mb-0">
-          New here? <a href="{{ url_for('register')}}">Create an account</a>
+          New here? <a href="{{ url_for('forum_bp.register')}}">Create an account</a>
         </p>
       </form>
     </div>

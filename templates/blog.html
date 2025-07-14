@@ -6,7 +6,7 @@
   <div class="container">
     <h1 class="display-5 fw-bold">Stay ahead of cyber threats</h1>
     <p class="lead mb-4">Practical guides, news and tips for security-minded professionals.</p>
-    <img src="./static/img/hero.jpg" class="img-fluid rounded shadow" style="max-height:300px" alt="Cyber security hero">
+    <img src="{{ url_for('static', filename='img/hero.jpg') }}" class="img-fluid rounded shadow" style="max-height:300px" alt="Cyber security hero">
   </div>
 </header>
 
@@ -20,7 +20,7 @@
       <!-- Post 1 -->
       <div class="col-md-6 col-lg-4">
         <div class="card h-100">
-          <img src="./static/img/post-1.jpg" class="card-img-top" alt="Post 1">
+          <img src="{{ url_for('static', filename='img/post-1.jpg') }}" class="card-img-top" alt="Post 1">
           <div class="card-body">
             <h3 class="h5 card-title">Zero-Day Exploits: What You Need to Know</h3>
             <p class="card-text small text-body-secondary">June 28 2025 · 5 min read</p>
@@ -33,7 +33,7 @@
       <!-- Post 2 -->
       <div class="col-md-6 col-lg-4">
         <div class="card h-100">
-          <img src="./static/img/post-2.jpg" class="card-img-top" alt="Post 2">
+          <img src="{{ url_for('static', filename='img/post-2.jpg') }}" class="card-img-top" alt="Post 2">
           <div class="card-body">
             <h3 class="h5 card-title">Building a Passwordless Future</h3>
             <p class="card-text small text-body-secondary">June 23 2025 · 7 min read</p>
@@ -46,7 +46,7 @@
       <!-- Post 3 -->
       <div class="col-md-6 col-lg-4">
         <div class="card h-100">
-          <img src="./static/img/post-3.jpg" class="card-img-top" alt="Post 3">
+          <img src="{{ url_for('static', filename='img/post-3.jpg') }}" class="card-img-top" alt="Post 3">
           <div class="card-body">
             <h3 class="h5 card-title">Incident Response Playbook Template</h3>
             <p class="card-text small text-body-secondary">June 16 2025 · 10 min read</p>
