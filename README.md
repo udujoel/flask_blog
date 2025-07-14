@@ -57,7 +57,7 @@ A simple blog application built with Flask that allows users to create, read, up
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/flask-blog.git
+   git clone https://github.com/udujoel/flask-blog.git
    cd flask-blog
    ```
 
