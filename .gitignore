@@ -31,10 +31,10 @@ venv.bak/
 
 # Flask
 instance/
+flask_session/
 .webassets-cache
 *.db
 *.sqlite3
-flask_session/
 
 # IDE
 .idea/

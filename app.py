@@ -52,7 +52,10 @@ def delete_post(post_id):
 @app.route('/<int:post_id>')
 def post(post_id):
     post = get_post(post_id)
-    return render_template('post.html', post=post)
+    conn = get_db_connection()
+    comments = conn.execute('SELECT * FROM comments WHERE post_id = ?', (post_id,)).fetchall()
+    conn.close()
+    return render_template('post.html', post=post, comments=comments)
 
 @app.route('/create', methods=('GET','POST'))
 def create():
@@ -205,3 +208,15 @@ def contactus():
             return redirect(url_for('contactus'))
 
     return render_template('contactus.html')
+
+@app.route('/add_comment/<int:post_id>', methods=('POST',))
+def add_comment(post_id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    comment = request.form['comment']
+    conn = get_db_connection()
+    conn.execute('INSERT INTO comments (post_id, author, content) VALUES (?,?,?)', (post_id, session['name'], comment))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('post', post_id=post_id))
+

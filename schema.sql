@@ -18,3 +18,13 @@ CREATE TABLE users (
     password TEXT NOT NULL,
     member_since TEXT  DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ','now'))
 );
+
+DROP TABLE IF EXISTS comments;
+
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER NOT NULL,
+    author TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created TEXT  DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ','now'))
+);
