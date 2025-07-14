@@ -70,10 +70,67 @@
   </div>
   <div class="container flex-grow-1">{% block content %} {% endblock %}</div>
 
- <!-- FOOTER -->
-<footer class="bg-dark text-white text-center small py-4">
-  © 2025 TheCyberForum. All rights reserved.
+<!-- FOOTER -->
+<footer class="bg-dark text-white pt-5 pb-3 mt-5">
+  <div class="container">
+    <div class="row gy-4">
+
+      <!-- Brand and About -->
+      <div class="col-md-4">
+        <h5 class="fw-bold mb-2">TheCyberForum</h5>
+        <p class="small text-muted">
+          Your trusted source for cybersecurity news, guides, and community support.
+        </p>
+        <div class="mb-2">
+          <a href="mailto:support@thecyberforum.com" class="text-white text-decoration-none">
+            <i class="bi bi-envelope-fill me-2"></i>support@thecyberforum.com
+          </a>
+        </div>
+        <div>
+          <a href="#" class="text-white me-2"><i class="bi bi-twitter"></i></a>
+          <a href="#" class="text-white me-2"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="text-white me-2"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-4">
+        <h6 class="fw-bold mb-2">Quick Links</h6>
+        <ul class="list-unstyled">
+          <li><a href="{{ url_for('index') }}" class="text-white text-decoration-none">Blog</a></li>
+          <li><a href="{{ url_for('contactus') }}" class="text-white text-decoration-none">Contact Us</a></li>
+          <li><a href="{{ url_for('register') }}" class="text-white text-decoration-none">Join/Register</a></li>
+          <li><a href="{{ url_for('profile') }}" class="text-white text-decoration-none">Profile</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter Signup -->
+      <div class="col-md-4">
+        <h6 class="fw-bold mb-2">Subscribe to our Newsletter</h6>
+        <form action="{{ url_for('subscribe') }}" method="post" class="d-flex flex-column flex-sm-row gap-2">
+          <input type="email" name="email" class="form-control form-control-sm" placeholder="Your email" required>
+          <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
+        </form>
+        <small class="text-muted d-block mt-2">Get the latest updates and tips. No spam.</small>
+
+        <address class="text-muted mb-2">
+          123 Cyber Street, Suite 404<br>
+          Little elm 1000-001, USA
+        </address>
+        <div class="text-muted">
+          <i class="bi bi-telephone-fill me-2"></i>
+          +1 21 000 0000
+        </div>
+      </div>
+
+    </div>
+    <hr class="border-secondary my-4">
+    <div class="text-center small text-muted">
+      © 2025 TheCyberForum. All rights reserved.
+    </div>
+  </div>
 </footer>
+
   
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

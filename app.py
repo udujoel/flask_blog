@@ -220,3 +220,13 @@ def add_comment(post_id):
     conn.close()
     return redirect(url_for('post', post_id=post_id))
 
+@app.route('/subscribe', methods=('POST',))
+def subscribe():
+    if request.method == 'POST':
+        email = request.form['email']
+        # conn = get_db_connection()
+        # conn.execute('INSERT INTO subscribers (email) VALUES (?)', (email,))
+        # conn.commit()
+        # conn.close()
+        flash('Subscription successful')
+        return redirect(url_for('index'))
