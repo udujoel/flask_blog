@@ -35,7 +35,7 @@
               <li class="list-group-item">
                 <div class="fw-semibold">{{ comment.author }}</div>
                 <div class="small text-muted mb-1">{{ comment.created|iso_to_pretty }}</div>
-                <div>{{ comment.content }}</div>
+                <div>{{ comment.content|safe }}</div>
               </li>
             {% endfor %}
           </ul>

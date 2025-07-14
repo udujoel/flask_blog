@@ -23,7 +23,7 @@
           <div class="card-body">
             <h3 class="h5 card-title">{{ post['title'] }}</h3>
             <p class="card-text small text-body-secondary">{{ post['created']|iso_to_pretty('%B %d, %Y at %H:%M') }} · by {{ post['author'] }}</p>
-            <p class="card-text small">{{ post['content'][:100] }}..</p>
+            <p class="card-text small">{{ post['content'][:100] | safe }}..</p>
             <a href="{{ url_for('post', post_id=post['id']) }}" class="btn btn-sm btn-outline-primary">Read more</a>
           </div>
         </div>
