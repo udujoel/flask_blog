@@ -23,6 +23,11 @@
             {{ post.content|safe }}
           </div>
           <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-sm">&larr; Back to Blog</a>
+          {% if session.username and session.username == post.author %}
+          <a href="{{ url_for('edit', post_id=post.id) }}" class="btn btn-warning btn-sm">
+            Edit Post
+          </a>
+        {% endif %}
         </div>
       </article>
 
