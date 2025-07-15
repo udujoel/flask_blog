@@ -20,4 +20,5 @@ services:
 databases:
   - name: thecyberforum-db
     databaseName: thecyberforum
-    user: thecyberforum_user 
+    user: thecyberforum_user
+    plan: free 
