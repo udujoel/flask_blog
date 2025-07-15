@@ -116,7 +116,7 @@ def edit(post_id):
     if request.method == 'POST':
         if 'username' not in session:
             return redirect(url_for('forum_bp.login'))
-        title = request.form['title'] 
+        title = request.form['title']
         if not title:
             flash('Title is needed!')
         else:
@@ -225,8 +225,14 @@ def profile():
 
 @app.template_filter('iso_to_pretty')
 def iso_to_pretty(value, fmt='%B %-d, %Y'):
-    """Format ISO date strings for display in templates."""
-    return datetime.fromisoformat(value.replace('Z', '+00:00')).strftime(fmt)
+    if isinstance(value, datetime):
+        return value.strftime(fmt)
+    if isinstance(value, str):
+        try:
+            return datetime.fromisoformat(value.replace('Z', '+00:00')).strftime(fmt)
+        except Exception:
+            return value  # fallback: return as-is
+    return str(value)
 
 @forum_bp.route('/contactus', methods=('GET','POST'))
 def contactus():
