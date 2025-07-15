@@ -17,10 +17,10 @@ Session(app)
 forum_bp = Blueprint('forum_bp', __name__)
 
 def get_db():
-    """Return (conn, cur) for PostgreSQL, (conn, conn) for SQLite."""
     if os.environ.get('DATABASE_URL'):
         import psycopg2
-        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        from psycopg2.extras import RealDictCursor
+        conn = psycopg2.connect(os.environ['DATABASE_URL'], cursor_factory=RealDictCursor)
         cur = conn.cursor()
         return conn, cur
     else:
